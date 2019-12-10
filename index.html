@@ -1,0 +1,344 @@
+<!DOCTYPE HTML>
+<!-- 
+    Warning: I'm really bad at coding. Side effects of viewing this document may include depression, insomina, eye strain, and sudden outbursts of laughter. Continue viewing source at your own risk.
+
+
+	Copyright (c) 2019 David Swanlund
+	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<html>
+	<head>
+		<title>MaskMy.XYZ | An Easy-To-Use Geographic Masking Tool</title>
+		<description>MaskMy.XYZ simplifies the process of geographic masking and spatial privacy protection</description>
+		<meta charset="utf-8" />
+		<meta name="author" content="David Swanlund">
+		<meta name="keywords" content="GIS, geomasking, privacy, geoprivacy, geographic masking, publication, science">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/ol.css" />
+		<link rel="stylesheet" href="assets/css/gifplayer.css" />
+		<link rel="stylesheet" href="assets/css/font-awesome.min.css"/>
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/skel.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+		<script src="assets/js/turf.min.js"></script>
+		<script src="assets/js/shpwrite.js"></script>
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/ol.js"></script>
+		<script src="assets/js/shp.min.js"></script>
+		<script src="assets/js/jszip.min.js"></script>
+		<script src="assets/js/FileSaver.js"></script>
+		<script src="assets/js/xyz.js"></script>
+		<script src="assets/js/proj4.js"></script>
+		<script src="assets/js/jquery.gifplayer.js"></script>
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body>
+
+		<!-- Wrapper -->
+		<div id="wrapper">
+
+			<!-- Header -->
+			<header id="header">
+				<div class="logo">
+					<span class="icon fa-map-marker"></span>
+				</div>
+				<div class="content">
+					<div class="inner">
+						<h1>MaskMy.XYZ</h1>
+						<p>MaskMy.XYZ is a tool that simplifies the process of geographic masking. Everything runs client-side in your browser, meaning there's nothing to install, data never leaves your computer, and as a result nobody except you ever sees your confidential files. It is a safe and secure way to anonymize spatial data without getting your hands dirty in GIS.</p>
+					</div>
+				</div>
+				<nav>
+					<ul>
+						<li><a href="#about">What is MaskMy.XYZ</a></li>
+						<li><a href="#maskingguide">Masking Guide</a></li>
+						<li><a href="#dm" style="color: #a00808; font-weight:600;">Masking Tool</a></li>
+						<li><a href="#disclaimer">Disclaimer</a></li>
+					</ul>
+				</nav>
+			</header>
+
+			<!-- Main -->
+			<div id="main">
+
+				<!-- About -->
+				<article id="about">
+					<h2>What is MaskMy.XYZ?</h2>
+					<p>MaskMy.XYZ helps users perform a time-tested geographic mask from the scientific literature, known as donut masking. Instead of being a toolbox for a specific (potentially expensive) GIS software suite, MaskMy.XYZ uses popular open source JavaScript libraries to mask data without ever requiring users to install or download any software. So whether you're a GIS expert who can't be bothered to script this method yourself, or a GIS newbie who knows you need to mask your data but aren't quite sure how, MaskMy.XYZ makes your life easier and brings previously cumbersome methods into reach.</p>
+
+					<h2>Should I trust this site with my data?</h2>
+					<p>When you load your files, no data leaves your browser, and all processing is done client-side using JavaScript. In fact, the application has been specifically designed so that it can be run offline for the utmost confidentiality. That means you don't need to trust this site: you can just load the page, unplug your internet, and do your work with the guarantee that your data isn't being stolen.</p>
+					
+					<h2> What about the basemap? </h2>
+					<p>When MaskMy.XYZ is used while connected to the internet, it will load a basemap to help visualize your data. This does not put your data at risk in any realistic scenario. The basemap loads areas that are several kilometers in size, and does not send the points themselves to the basemap provider. If you are still concerned you can always run the tool offline!</p>
+
+					<h2>Is it foolproof?</h2>
+					<p>No, and neither is any other privacy-related tool. MaskMy.XYZ drastically simplifies the process of geographic masking while also providing general advice, but that doesn't guarantee that your data can't be re-identified. It is up to you to ensure that you're using this tool appropriately and that you understand its limitations! For more information, check out the <a href="#disclaimer">disclaimer</a>.</p>
+
+					<h2>Credits</h2>
+					<p>MaskMy.XYZ uses and is grateful for a number of open source software projects, including HTML5Up, TurfJS, Shapefile-JS, Shp-Write, JQuery, FileSaver.js, JSZip, Proj4JS, and OpenLayers. Their respective licenses can be found <a href="LICENSE.txt">here</a></p>
+				</article>
+
+				<!-- Guided Setup -->
+				<article id="maskingguide">
+					<h2>What is geographic masking?</h2>
+					<p>Researchers often like publishing maps, but doing so can be dangerous when the data being mapped is sensitive or private. Home addresses of patients, the position of archeological sites, and the location of endangered species are just three examples among many where a map can be hugely helpful for readers, but may also expose people's sensitive health data, attract unwanted tourists to archeological sites, or direct hunters towards those already-endangered animals. </p>
+					<p>Geographic masks are a set of techniques that alter the location of points in a map to protect privacy without overly affecting any spatial patterns. In other words, <i>geographic masks allow researchers to publish useful maps of approximate locations, without exposing sensitive data or violating anyone's privacy</i>. Of course, this is a trade-off: with more masking comes more privacy, but this privacy comes as the cost of <i>information loss</i>. If we apply too much masking to our data, the end result may not resemble the original data whatsoever. While the balance between privacy and information loss can be tricky, its best to air on the side of privacy.</p>
+
+					<h2>What geographic mask does MaskMy.XYZ use?</h2>
+					<p>MaskMy.XYZ performs donut masking, which is a funny term for a simple concept: moving each point randomly between a minimum and maximum distance, as pictured below. Typically donut masking is performed by creating two buffers (circles), and then randomly generating a new point between those two buffers. MaskMy.XYZ does it a little differently: it chooses a random distance between the minimum and maximum values that you set, and then finds a random angle between 0 and 360 degrees, before finally relocating the point based on the combintion of the two. The end result is essentially the same, but is much easier for a computer to calculate!</p>
+					<img src="images/donutmasking.PNG" width="100%"><p></p>
+
+					<h2>Can I use this to mask trajectory data, like GPS tracks?</h2>
+					<p>Technically yes, but there are a lot of caveats, and if you have to ask then you probably shouldn't! Trajectory data can often be very hard to effectively anonymize, especially if you want readers or users of your data to be able to distinguish between each trajectory (i.e. see who went where). If you're only publishing a static map of <i>all</i> the points in your dataset, and provide no indication that any given point belongs to a particular person, then it <i>may</i> be safe to use MaskMy.XYZ in this scenario, but be cautious. For more information, give <a href='http://dx.doi.org/10.1080/13658816.2015.1101767'>this paper</a> a read.</p>
+
+					<h2>How do I use the masking tool?</h2>
+					<p>Watch this GIF to learn how to mask your data, from start to finish!</p>
+					<img class="gifplayer" src="images/instructions.png" style="box-shadow: 2px 2px 2px 2px #ccc;" width="100%">
+					<script>$('.gifplayer').gifplayer();</script>
+					<p></p>
+
+					<h2>How do I load data?</h2>
+					<p>First, make sure the data you want to mask is in a shapefile format. Then, select all the individual files that form your shapefile (such as the .shp, .dbf, .prj, etc), and add them to a zip file. MaskMy.XYZ can only load zipped shapefiles. Once you have the zip file, just click the 'Choose File' button in the Masking Tool and select the zipped shapefile from your file system, as shown in the above video.</p>
+
+					<h2>What are 'boundary polygons' for?</h2>
+					<p>Sometimes when we mask data, we want to make sure that when each point moves it doesn't move out of a particular area. For instance, when masking a home location, we might want to ensure that when  the point is masked (i.e. when it is relocated), that it doesn't leave the census tract it is in, so that the masked location keeps the same census variables as the original location. To do this in MaskMy.XYZ, just load the boundary polygons that you want to keep the points inside of, and MaskMy.XYZ will do the rest!</p>
+
+					<h2>What masking distances should I use?</h2>
+					<p>That depends on a wide variety of factors, including population density, the sensitivity of the data being masked, and the 'information loss' that you're comfortable with. In other words, it's entirely up to you and your knowledge of the data, but here are some guiding considerations:</p>
+					 
+					<p><strong>Population Density: </strong>the underlying population density strongly effects how much masking is required to adequately protect privacy. For instance, masking a point in an urban core by 200 meters may provide a very strong degree of privacy if a thousand people live within those 200 meters, but moving a point in a rural town may not provide any privacy at all if nobody else lives within 200 meters. Often data-sets will span a combination of urban and rural areas, complicating things even further. Some geographic masks automatically take population density into account, however, for various reasons MaskMy.XYZ does not due. Therefore, in deciding what distance to use when masking, it is critical that you reflect carefully on the underlying population density of your data. </p>
+					<p><strong>Data Sensitivity: </strong>not all sensitive data is equally sensitive. For example, a database containing the home locations of patients suffering from the flu is far less sensitive than if the patients suffered from HIV. Obviously, far greater masking distances should be used in the latter scenario. While it is not always so clear-cut, decisions on an appropriate masking distance should take into account the sensitivity of the data being masked. Ask yourself, what are the stakes if someone reverse engineers the mask and re-identifies the people (or places) in your dataset? </p>
+					<p><strong>Information Loss: </strong>increasing the distance used when masking data will provide more privacy, but it comes at the cost of information loss. In other words, the more we mask data, the less the masked data will resemble the original data. This can be critical if, for instance, you are trying to show clusters of a given disease but mask the data too much, making those clusters no longer detectable to readers. Ideally, a balance can be struck where a sufficient level of privacy is achieved with only a small amount of information loss. In cases where the level of privacy required necessarily produces too much information loss for the map to be useful, you may need to reconsider whether you should include a map at all! </p>
+
+					<h2>What is the privacy rating?</h2>
+					<p>The privacy rating is a rough measure of the likelihood that your data might be re-identified by someone. It is based on Spruill's measure, but we invert it to make it a privacy rating rather than a disclosure risk rating. Formally, Spruill's measure is defined by Armstrong et al (1999) as follows:</p>
+					<p style="margin-left: 1rem;"><i>"For each record in the masked file M, compute the distance between its geographic co-ordinates and those of each record in the original file X. Spruill's measure, S, is the proportion of records in M that are closer to their 'parent' records than to any other record in X. A mask for which a large number of records are closest to their parent records has a high disclosure risk"</i></p>
+					
+					<h2>What is the mean center displacement distance?</h2>
+					<p>This refers to how far the 'mean center' of your masked points have moved due to masking. 'Mean center' is essentially just the central point in a group of points. For instance, if you had a cluster of ten points, you might calculate the average X coordinate of all the points, and the average Y coordinate of all the points. These two averages represent the mean center. Like the privacy rating, it too is a crude measure, but essentially the more the mean center has moved, the more information loss your data has suffered.</p>
+					
+					<h2>What are cluster metrics?</h2>
+					<p>Cluster metrics use an algorithm known as DBSCAN to try and find different pockets of points, or clusters, in your sensitive and masked data. Ideally, no clusters are added due to masking, nor are any lost. With cluster metrics enabled, you will be provided both a count of how many clusters there are before and after masking, as well as a visual representation of where those clusters are on the map, as points that are part of a cluster appear as bold on the map. However, DBSCAN is both complicated and <i>very</i> sensitive to the maximum cluster distance value you select, so don't use this to try and detect real, meaningful clusters in your data. Instead, play around with the value, see how it affects cluster detection until you find a value that you think looks reasonable, and use it for <i>exploring</i> how masking changes the distribution of your data and some of the <i>potential</i> clusters within it. This really is an exploratory tool, and is not meant for statistical purposes.</p>
+					
+					<h2>Should I publish my masking distances?</h2>
+					<p>Nope! It's best not to disclose what masking distances you chose, as it could weaken the mask and make it easier for an adversary to re-identify the points.</p>
+
+					<h2>Other resources</h2>
+					<p>Unfortunately, most of the resources required to learn about geographic masking are in the academic literature. For an excellent review article, read:</p>
+					<ul>
+						<li>Zandbergen, P. (2014). Ensuring Confidentiality of Geocoded Health Data: Assessing Geographic Masking Strategies for Individual-Level Data. Advances in Medicine. <a href="https://doi.org/10.1155/2014/567049">https://doi.org/10.1155/2014/567049</a></li>
+					</ul>
+					<p>A more comprehensive reading list can be found <a href="maskingBibliography.html">here</a>. Included in that list are several more powerful masks than MaskMy.XYZ provides.</p>
+
+				</article>
+
+				<!-- Donut Masking -->
+				<article id="dm">
+					<h2>Masking Tool</h2>
+					<p>
+						
+						<strong></strong> 
+					
+					<div>
+						<span>Load the data you want to mask: </span><span class="icon fa-info-circle tooltip"><span class="tooltiptext">Load your sensitive data here as a zipped shapefile. For more info on how to load data, including an instructional video, check out the <a style="color: #a00808;" href="#maskingguide">masking guide</a>. </span></span><br>
+						<input type="file" id="sensitiveInput" accept=".zip">
+					</div><br>
+					
+					<div>
+						<span>(Optional) Load boundary polygons to contain points: </span><span class="icon fa-info-circle tooltip"><span class="tooltiptext">Optional, but if loaded, boundary files allow you to keep masked points within a given area, such as a census unit. For more info, check out the <a style="color: #a00808;" href="#maskingguide">masking guide</a>. Must be loaded as a zipped shapefile.</span></span><br>
+						<input type="file" id="boundaryInput" accept=".zip">
+					</div><br>
+					
+					<div>
+						<span><strong>Distance</strong>: set the minimum and maximum distance in meters that any given point will move: </span> <span class="icon fa-info-circle tooltip"><span class="tooltiptext">Masking distances must be chosen carefully. For guidance on selecting a distance, check out the <a style="color: #a00808;" href="#maskingguide">masking guide</a></span></span>
+						<br>
+						<div class="slideContainer">
+							<input type="range" min="10" max="500" step="5" value="30" class="slider" id="minDistInput">
+							<span>Minimum Distance: </span><span id="minDistValue">30</span> <span>meters</span>
+						</div>
+						<br>
+						<div class="slideContainer">
+							<input type="range" min="100" max="5000" step="5" value="300" class="slider" id="maxDistInput">
+							<span>Maximum Distance: </span><span id="maxDistValue">300</span> <span>meters</span>
+						</div>
+
+					</div>
+
+
+					<button style="box-shadow: none; margin: 1rem 0 0 0; padding: 0; font-size: .75em;" id="enableInfoLoss">Enable Cluster Metrics</button> <span class="icon fa-info-circle tooltip"><span class="tooltiptext">Provides additional tools to see how much the masking process changed the data, which may help when judging what masking distance to use. Uses DBSCAN to identify points that form clusters, and notes the number of clusters identified before and after masking (ideally these values are the same). Meant for exploratory purposes only.</span></span>
+
+
+
+					<div style="display: none;" id="infoDiv">
+
+						<div class="slideContainer">
+							<input type="range" min="50" max="10000" step="50" value="500" class="slider" id="bandwidth">
+							<span>Maximum Cluster Distance: <span id="sliderValue"></span> meters</span> <span class="icon fa-info-circle tooltip"><span class="tooltiptext">This value adjusts the distance used by the DBSCAN algorithm to detect clusters. DBSCAN is both complicated and <i>very</i> sensitive to this distance value, so don't use this to try and detect real, meaningful clusters in your data. Instead, play around with the value, see how it affects cluster detection until you find a value that you think looks reasonable, and use it for <i>exploring</i> how masking changes the distribution of your data and some of the <i>potential</i> clusters within it.</span></span>
+						</div>
+						<br>
+						<strong id="clusterReport">Number of Clusters Detected</strong> <span class="icon fa-info-circle tooltip"><span class="tooltiptext">Points that form clusters are represented in bold on the map. Ideally the number and location of clusters before and after masking are similar.</span></span><br>
+						<span id="beforeMasking">Before Masking: </span><br>
+						<span id="afterMasking">After Masking: </span><br>
+						<span id="addLoss">Clusters Lost or Added: </span><br>
+						<br>
+
+					
+					</div>
+					<br>
+					<div id="privacyRatingDiv" style="display: none;">
+						<strong>Privacy Rating: </strong><strong id="privacyRating"></strong> <span class="icon fa-info-circle tooltip"><span class="tooltiptext">This represents the percentage of masked points that are closer to any sensitive point other than their original/parent/unmasked point. While this is a crude measure of privacy, higher ratings suggest a lower level of disclosure risk. A rating of 100 does not guarantee perfect privacy. Based on Spruill's Measure and inverted for clarity, as described <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/%28SICI%291097-0258%2819990315%2918%3A5%3C497%3A%3AAID-SIM45%3E3.0.CO%3B2-%23" style="color: #a00808;" target="_blank">here</a>.</span></span>
+					</div>
+
+					<div id="centerMoveDiv" style="display:none;">
+						<strong id="centerMove">Center Displacement Distance: </strong> <span class="icon fa-info-circle tooltip"><span class="tooltiptext">This represents how far the center of the point pattern moved due to masking. If you're unsure what a 'mean center' is, <a href="https://pro.arcgis.com/en/pro-app/tool-reference/spatial-statistics/h-how-mean-center-spatial-statistics-works.htm"style="color: #a00808;" target="_blank">click here</a> for a good explanation from ESRI.</span></span>
+					</div>
+
+					<button style="margin: 1rem 0 0 0; width: 100%;" id="display">Display Data</button>
+					
+					<button style="margin: 0.5rem 0 .5rem 0; width: 100%;" id="mask">Mask My XYZ!</button><br>
+					
+					<div id="map" style="height:50vh;"></div>
+				
+					<div id="citationLoader"><a href="#citation"><button style="margin: 1rem 0 0 0; width: 100%;" id="downloadMasked">Download Masked Data</button></a></div>
+
+					<button style="margin: 0.5rem 0 .5rem 0; width: 100%;" id="clear">Clear All</button>
+
+					<script>
+						//Set a bunch of variables based on user input
+						var bandwidth = document.getElementById("bandwidth");
+						var output = document.getElementById("sliderValue");
+						var minDistInput = document.getElementById("minDistInput");
+						var minDistValue = document.getElementById("minDistValue");
+						var maxDistInput = document.getElementById("maxDistInput");
+						var maxDistValue = document.getElementById("maxDistValue");
+
+						//This section just edits the values so that the sliders work
+						clustersEnabled = false;
+						output.innerHTML = bandwidth.value;
+						bandwidth.oninput = function() {
+						output.innerHTML = this.value;
+						}
+						minDistInput.oninput = function() {
+						minDistValue.innerHTML = this.value;
+						}
+						maxDistInput.oninput = function() {
+						maxDistValue.innerHTML = this.value;
+						}
+
+						//Enables the cluster detection tools
+						$("#enableInfoLoss").click(function(){
+							clustersEnabled = true;
+							$("#infoDiv").show();
+							$(".slideContainer").show();
+						});
+
+						//The Map!
+						var map = new ol.Map({
+							target: 'map',
+							layers: [
+							new ol.layer.Tile({
+								source: new ol.source.XYZ({
+									url:'https://basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
+								})
+							})
+							],
+							view: new ol.View({
+							center: ol.proj.fromLonLat([-100, 45]),
+							zoom: 3,
+							maxZoom: 13
+							})
+						});
+						
+						//Download button, defines the options for shpwrite and then triggers the download. Also loads the citation page upon click
+						$("#downloadMasked").on("click", function () {
+							$("#citation").load();
+							var options = {
+								folder: 'MaskedData',
+								types: {
+									point: 'MaskedPoints',
+								}
+							}
+							shpwrite.download(masked.reprojected, options);
+						});
+
+						//Trigger functions based on user input from buttons
+						$("#sensitiveInput").change(function(){loadShapeFile("sensitiveInput", "sensitiveTag", "sensitive")});
+						$("#boundaryInput").change(function(){loadShapeFile("boundaryInput", "boundaryTag", "boundary")});
+						$("#display").click(function(){toMap(sensitive.data, sensitive.style), toMap(boundary.data, boundary.style)});
+						$("#mask").click(function(){xyz.displace("sensitive", "masked"), toMap(sensitive.data, sensitive.style), toMap(masked.data, masked.style), toMap(sensitiveClusters.cluster, sensitiveClusters.style), toMap(maskedClusters.cluster, maskedClusters.style)});
+						$("#clear").click(function(){location.reload()});
+					</script>
+				</article>
+				<article id="citation">
+					<h2>Important Information:</h2>
+					<ul>
+					<li>MaskMy.XYZ isn't a silver bullet for privacy protection. It makes donut geomasking easy, but you still need to use appropriate masking distances for your dataset. Even 5km masking distances aren't enough if there's no one else living within 5km of a given point.</li>
+					<li>Remember that MaskMy.XYZ preserves all attribute data from your original shapefile. Since attribute data often also contains sensitive information, make sure to delete or anonymize that as well before you share your data.</li>
+					<li>Never reveal your masking distances to anyone, as this can weaken the effectiveness of the mask. Instead, simply state in your publication that the data was masked. Here's a standard line of text you can feel free to copy or modify and include in your publication:</li>
+					
+						<li style="margin-left: 1.5rem; margin-top: .5rem;"><i>"Sensitive spatial data was geographically masked using MaskMy.XYZ prior to publication to protect privacy, and therefore point locations on the map do not represent actual locations. Specific masking parameters have also been withheld to protect the integrity of the mask."</i></li>
+					
+					
+					</ul>
+					<h2>Find MaskMy.XYZ useful?</h2>
+					<p>Help spread the word by citing it in your research or sharing it on social media. Just remember to keep your actual masking distances a secret!</p>
+					<p style="margin-bottom: 0;"><strong>APA:</strong> Swanlund, D., Schuurman, N., & Brussoni, M. (Forthcoming). MaskMy.XYZ: An Easy-To-Use Tool for Protecting Geoprivacy Using Geographic Masks. Transactions in GIS. https://doi.org/10.1111/tgis.12606</p>
+					<p style="margin-bottom: 0;"><strong>Chicago (Full Note):</strong>Swanlund, David, Nadine Schuurman, and Mariana Brussoni. "MaskMy.XYZ: An Easy-To-Use Tool for Protecting Geoprivacy Using Geographic Masks." Transactions in GIS, Forthcoming. https://doi.org/10.1111/tgis.12606.</p>
+					<p><strong>MLA:</strong> Swanlund, David, et al. "MaskMy.XYZ: An Easy-To-Use Tool for Protecting Geoprivacy Using Geographic Masks." Transactions in GIS, Forthcoming, doi:10.1111/tgis.12606.</p>
+					<a href="#dm"><button style="width:100%">Back</button></a>
+				</article>
+
+
+				<article id="disclaimer">
+					<h2 id="disclaimer">Disclaimer</h2>
+					<p>MaskMy.XYZ is a tool that 1) offers general advice about geographic masking, and 2) makes certain geographic masks easier to use, but it is not a silver bullet for privacy protection or data anonymization. Geographic masking requires careful consideration and intimate knowledge of the data that is being masked to be effective. For instance, displacing a location in a densely populated city by 200 meters may provide very strong privacy protection, but in a rural environment it may provide little to no privacy at all. In other words, following the advice provided by MaskMy.XYZ and using its masking tools to anonymize your spatial data does not guarantee that your data is adeqautely protected. There are simply too many factors involved in privacy protection for any geographic masking method, tool, or service to provide any such guarantee. Frankly, to do so would be dishonest. Therefore, MaskMy.XYZ is provided 'as is', without warranty of any kind, expressed or implied. The project uses an <a href="https://tldrlegal.com/license/mit-license">MIT license</a>, which is described below.</p>
+					<hr>
+					<h3>MIT License</h3>
+					<p>Copyright (c) 2019, David Swanlund</p>
+
+					<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+					
+					<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+					
+					<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+
+				</article>
+
+				<article id="privacy">
+					<h2 id="privacy">Privacy Policy</h2>
+					<p>MaskMy.XYZ does not use analytics services such as Google Analytics or Matomo. It only captures basic webserver data using nginx, which includes IP address (which we anonymize) and user-agent (e.g. Firefox on Windows 10), as well as what files are accessed and at what time. This is simply to measure how much traffic the site receives and will not be sold or shared with third parties. No cookies are used.</p>
+
+					<p>This policy was last updated in December 2019, and may change at any time.</p>
+				</article>
+
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<p class="copyright">&copy; MaskMy.XYZ by David Swanlund. Modified website based on: <a href="https://html5up.net">HTML5 UP</a>. <a href="#privacy">Privacy Policy.</a></p>
+			</footer>
+
+		</div>
+
+		<!-- Background -->
+		<div id="bg"></div>
+
+		<!-- Tags for injecting geoJSON data -->
+		<script id="sensitiveTag"></script>
+		<script id="boundaryTag"></script>
+
+	</body>
+
+</html>
+<!--
+	Dimension by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
