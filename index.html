@@ -16,6 +16,8 @@
 		<meta name="author" content="David Swanlund">
 		<meta name="keywords" content="GIS, geomasking, privacy, geoprivacy, geographic masking, publication, science">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="assets/css/ol.css" />
 		<link rel="stylesheet" href="assets/css/gifplayer.css" />
@@ -112,7 +114,7 @@
 					<h2>What masking distances should I use?</h2>
 					<p>That depends on a wide variety of factors, including population density, the sensitivity of the data being masked, and the 'information loss' that you're comfortable with. In other words, it's entirely up to you and your knowledge of the data, but here are some guiding considerations:</p>
 					 
-					<p><strong>Population Density: </strong>the underlying population density strongly effects how much masking is required to adequately protect privacy. For instance, masking a point in an urban core by 200 meters may provide a very strong degree of privacy if a thousand people live within those 200 meters, but moving a point in a rural town may not provide any privacy at all if nobody else lives within 200 meters. Often data-sets will span a combination of urban and rural areas, complicating things even further. Some geographic masks automatically take population density into account, however, for various reasons MaskMy.XYZ does not due. Therefore, in deciding what distance to use when masking, it is critical that you reflect carefully on the underlying population density of your data. </p>
+					<p><strong>Population Density: </strong>the underlying population density strongly effects how much masking is required to adequately protect privacy. For instance, masking a point in an urban core by 200 meters may provide a very strong degree of privacy if a thousand people live within those 200 meters, but moving a point in a rural town may not provide any privacy at all if nobody else lives within 200 meters. Often data-sets will span a combination of urban and rural areas, complicating things even further. Some geographic masks automatically take population density into account, however, for various reasons MaskMy.XYZ does not. Therefore, in deciding what distance to use when masking, it is critical that you reflect carefully on the underlying population density of your data. </p>
 					<p><strong>Data Sensitivity: </strong>not all sensitive data is equally sensitive. For example, a database containing the home locations of patients suffering from the flu is far less sensitive than if the patients suffered from HIV. Obviously, far greater masking distances should be used in the latter scenario. While it is not always so clear-cut, decisions on an appropriate masking distance should take into account the sensitivity of the data being masked. Ask yourself, what are the stakes if someone reverse engineers the mask and re-identifies the people (or places) in your dataset? </p>
 					<p><strong>Information Loss: </strong>increasing the distance used when masking data will provide more privacy, but it comes at the cost of information loss. In other words, the more we mask data, the less the masked data will resemble the original data. This can be critical if, for instance, you are trying to show clusters of a given disease but mask the data too much, making those clusters no longer detectable to readers. Ideally, a balance can be struck where a sufficient level of privacy is achieved with only a small amount of information loss. In cases where the level of privacy required necessarily produces too much information loss for the map to be useful, you may need to reconsider whether you should include a map at all! </p>
 
@@ -128,6 +130,9 @@
 					
 					<h2>Should I publish my masking distances?</h2>
 					<p>Nope! It's best not to disclose what masking distances you chose, as it could weaken the mask and make it easier for an adversary to re-identify the points.</p>
+
+					<h2>When I download data, it goes to 'about:blocked'</h2>
+					<p>This is a known issue with Chrome-based browsers and usually happens with larger data sets. If you're running into this problem, try using Firefox.</p>
 
 					<h2>Other resources</h2>
 					<p>Unfortunately, most of the resources required to learn about geographic masking are in the academic literature. For an excellent review article, read:</p>
@@ -288,9 +293,9 @@
 					</ul>
 					<h2>Find MaskMy.XYZ useful?</h2>
 					<p>Help spread the word by citing it in your research or sharing it on social media. Just remember to keep your actual masking distances a secret!</p>
-					<p style="margin-bottom: 0;"><strong>APA:</strong> Swanlund, D., Schuurman, N., & Brussoni, M. (Forthcoming). MaskMy.XYZ: An Easy-To-Use Tool for Protecting Geoprivacy Using Geographic Masks. Transactions in GIS. https://doi.org/10.1111/tgis.12606</p>
-					<p style="margin-bottom: 0;"><strong>Chicago (Full Note):</strong>Swanlund, David, Nadine Schuurman, and Mariana Brussoni. "MaskMy.XYZ: An Easy-To-Use Tool for Protecting Geoprivacy Using Geographic Masks." Transactions in GIS, Forthcoming. https://doi.org/10.1111/tgis.12606.</p>
-					<p><strong>MLA:</strong> Swanlund, David, et al. "MaskMy.XYZ: An Easy-To-Use Tool for Protecting Geoprivacy Using Geographic Masks." Transactions in GIS, Forthcoming, doi:10.1111/tgis.12606.</p>
+					<p style="margin-bottom: 0;"><strong>APA:</strong> Swanlund, D., Schuurman, N., & Brussoni, M. (2019). MaskMy.XYZ: An Easy-To-Use Tool for Protecting Geoprivacy Using Geographic Masks. Transactions in GIS. https://doi.org/10.1111/tgis.12606</p>
+					<p style="margin-bottom: 0;"><strong>Chicago (Full Note):</strong>Swanlund, David, Nadine Schuurman, and Mariana Brussoni. "MaskMy.XYZ: An Easy-To-Use Tool for Protecting Geoprivacy Using Geographic Masks." Transactions in GIS, 2019. https://doi.org/10.1111/tgis.12606.</p>
+					<p><strong>MLA:</strong> Swanlund, David, et al. "MaskMy.XYZ: An Easy-To-Use Tool for Protecting Geoprivacy Using Geographic Masks." Transactions in GIS, 2019, doi:10.1111/tgis.12606.</p>
 					<a href="#dm"><button style="width:100%">Back</button></a>
 				</article>
 
