@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<!-- 
+<!--
     Warning: I'm really bad at coding. Side effects of viewing this document may include depression, insomina, eye strain, and sudden outbursts of laughter. Continue viewing source at your own risk.
 
 
@@ -38,6 +38,23 @@
 		<script src="assets/js/proj4.js"></script>
 		<script src="assets/js/jquery.gifplayer.js"></script>
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+		<!-- Matomo -->
+		<script>
+			var _paq = window._paq = window._paq || [];
+			/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+			_paq.push(['trackPageView']);
+			_paq.push(['enableLinkTracking']);
+			(function() {
+			var u="//data.swanlund.space/";
+			_paq.push(['setTrackerUrl', u+'matomo.php']);
+			_paq.push(['setSiteId', '2']);
+			var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+			g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+			})();
+		</script>
+		<noscript><p><img src="//data.swanlund.space/matomo.php?idsite=2&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+		<!-- End Matomo Code -->
 	</head>
 	<body>
 
@@ -75,7 +92,7 @@
 
 					<h2>Should I trust this site with my data?</h2>
 					<p>When you load your files, no data leaves your browser, and all processing is done client-side using JavaScript. In fact, the application has been specifically designed so that it can be run offline for the utmost confidentiality. That means you don't need to trust this site: you can just load the page, unplug your internet, and do your work with the guarantee that your data isn't being stolen.</p>
-					
+
 					<h2> What about the basemap? </h2>
 					<p>When MaskMy.XYZ is used while connected to the internet, it will load a basemap to help visualize your data. This does not put your data at risk in any realistic scenario. The basemap loads areas that are several kilometers in size, and does not send the points themselves to the basemap provider. If you are still concerned you can always run the tool offline!</p>
 
@@ -113,7 +130,7 @@
 
 					<h2>What masking distances should I use?</h2>
 					<p>That depends on a wide variety of factors, including population density, the sensitivity of the data being masked, and the 'information loss' that you're comfortable with. In other words, it's entirely up to you and your knowledge of the data, but here are some guiding considerations:</p>
-					 
+
 					<p><strong>Population Density: </strong>the underlying population density strongly effects how much masking is required to adequately protect privacy. For instance, masking a point in an urban core by 200 meters may provide a very strong degree of privacy if a thousand people live within those 200 meters, but moving a point in a rural town may not provide any privacy at all if nobody else lives within 200 meters. Often data-sets will span a combination of urban and rural areas, complicating things even further. Some geographic masks automatically take population density into account, however, for various reasons MaskMy.XYZ does not. Therefore, in deciding what distance to use when masking, it is critical that you reflect carefully on the underlying population density of your data. </p>
 					<p><strong>Data Sensitivity: </strong>not all sensitive data is equally sensitive. For example, a database containing the home locations of patients suffering from the flu is far less sensitive than if the patients suffered from HIV. Obviously, far greater masking distances should be used in the latter scenario. While it is not always so clear-cut, decisions on an appropriate masking distance should take into account the sensitivity of the data being masked. Ask yourself, what are the stakes if someone reverse engineers the mask and re-identifies the people (or places) in your dataset? </p>
 					<p><strong>Information Loss: </strong>increasing the distance used when masking data will provide more privacy, but it comes at the cost of information loss. In other words, the more we mask data, the less the masked data will resemble the original data. This can be critical if, for instance, you are trying to show clusters of a given disease but mask the data too much, making those clusters no longer detectable to readers. Ideally, a balance can be struck where a sufficient level of privacy is achieved with only a small amount of information loss. In cases where the level of privacy required necessarily produces too much information loss for the map to be useful, you may need to reconsider whether you should include a map at all! </p>
@@ -121,13 +138,13 @@
 					<h2>What is the privacy rating?</h2>
 					<p>The privacy rating is a rough measure of the likelihood that your data might be re-identified by someone. It is based on Spruill's measure, but we invert it to make it a privacy rating rather than a disclosure risk rating. Formally, Spruill's measure is defined by Armstrong et al (1999) as follows:</p>
 					<p style="margin-left: 1rem;"><i>"For each record in the masked file M, compute the distance between its geographic co-ordinates and those of each record in the original file X. Spruill's measure, S, is the proportion of records in M that are closer to their 'parent' records than to any other record in X. A mask for which a large number of records are closest to their parent records has a high disclosure risk"</i></p>
-					
+
 					<h2>What is the mean center displacement distance?</h2>
 					<p>This refers to how far the 'mean center' of your masked points have moved due to masking. 'Mean center' is essentially just the central point in a group of points. For instance, if you had a cluster of ten points, you might calculate the average X coordinate of all the points, and the average Y coordinate of all the points. These two averages represent the mean center. Like the privacy rating, it too is a crude measure, but essentially the more the mean center has moved, the more information loss your data has suffered.</p>
-					
+
 					<h2>What are cluster metrics?</h2>
 					<p>Cluster metrics use an algorithm known as DBSCAN to try and find different pockets of points, or clusters, in your sensitive and masked data. Ideally, no clusters are added due to masking, nor are any lost. With cluster metrics enabled, you will be provided both a count of how many clusters there are before and after masking, as well as a visual representation of where those clusters are on the map, as points that are part of a cluster appear as bold on the map. However, DBSCAN is both complicated and <i>very</i> sensitive to the maximum cluster distance value you select, so don't use this to try and detect real, meaningful clusters in your data. Instead, play around with the value, see how it affects cluster detection until you find a value that you think looks reasonable, and use it for <i>exploring</i> how masking changes the distribution of your data and some of the <i>potential</i> clusters within it. This really is an exploratory tool, and is not meant for statistical purposes.</p>
-					
+
 					<h2>Should I publish my masking distances?</h2>
 					<p>Nope! It's best not to disclose what masking distances you chose, as it could weaken the mask and make it easier for an adversary to re-identify the points.</p>
 
@@ -145,23 +162,23 @@
 
 				<!-- Donut Masking -->
 				<article id="dm">
-					
+
 					<div style="text-align: center; margin: 0 auto;"><img src="images/logo.png" class="logo-image"></div>
 
 					<p>
-						
-						<strong></strong> 
-					
+
+						<strong></strong>
+
 					<div>
 						<span>Load the data you want to mask: </span><span class="icon fa-info-circle tooltip"><span class="tooltiptext">Load your sensitive data here as a zipped shapefile. For more info on how to load data, including an instructional video, check out the <a style="color: #a00808;" href="#maskingguide">masking guide</a>. </span></span><br>
 						<input type="file" id="sensitiveInput" accept=".zip">
 					</div><br>
-					
+
 					<div>
 						<span>(Optional) Load boundary polygons to contain points: </span><span class="icon fa-info-circle tooltip"><span class="tooltiptext">Optional, but if loaded, boundary files allow you to keep masked points within a given area, such as a census unit. For more info, check out the <a style="color: #a00808;" href="#maskingguide">masking guide</a>. Must be loaded as a zipped shapefile.</span></span><br>
 						<input type="file" id="boundaryInput" accept=".zip">
 					</div><br>
-					
+
 					<div>
 						<span><strong>Distance</strong>: set the minimum and maximum distance in meters that any given point will move: </span> <span class="icon fa-info-circle tooltip"><span class="tooltiptext">Masking distances must be chosen carefully. For guidance on selecting a distance, check out the <a style="color: #a00808;" href="#maskingguide">masking guide</a></span></span>
 						<br>
@@ -195,7 +212,7 @@
 						<span id="addLoss">Clusters Lost or Added: </span><br>
 						<br>
 
-					
+
 					</div>
 					<br>
 					<div id="privacyRatingDiv" style="display: none;">
@@ -207,11 +224,11 @@
 					</div>
 
 					<button style="margin: 1rem 0 0 0; width: 100%;" id="display">Display Data</button>
-					
+
 					<button style="margin: 0.5rem 0 .5rem 0; width: 100%;" id="mask">Mask My XYZ!</button><br>
-					
+
 					<div id="map" style="height:50vh;"></div>
-				
+
 					<div id="citationLoader"><a href="#citation"><button style="margin: 1rem 0 0 0; width: 100%;" id="downloadMasked">Download Masked Data</button></a></div>
 
 					<button style="margin: 0.5rem 0 .5rem 0; width: 100%;" id="clear">Clear All</button>
@@ -261,7 +278,7 @@
 							maxZoom: 13
 							})
 						});
-						
+
 						//Download button, defines the options for shpwrite and then triggers the download. Also loads the citation page upon click
 						$("#downloadMasked").on("click", function () {
 							$("#citation").load();
@@ -288,10 +305,10 @@
 					<li>MaskMy.XYZ isn't a silver bullet for privacy protection. It makes donut geomasking easy, but you still need to use appropriate masking distances for your dataset. Even 5km masking distances aren't enough if there's no one else living within 5km of a given point.</li>
 					<li>Remember that MaskMy.XYZ preserves all attribute data from your original shapefile. Since attribute data often also contains sensitive information, make sure to delete or anonymize that as well before you share your data.</li>
 					<li>Never reveal your masking distances to anyone, as this can weaken the effectiveness of the mask. Instead, simply state in your publication that the data was masked. Here's a standard line of text you can feel free to copy or modify and include in your publication:</li>
-					
+
 						<li style="margin-left: 1.5rem; margin-top: .5rem;"><i>"Sensitive spatial data was geographically masked using MaskMy.XYZ prior to publication to protect privacy, and therefore point locations on the map do not represent actual locations. Specific masking parameters have also been withheld to protect the integrity of the mask."</i></li>
-					
-					
+
+
 					</ul>
 					<h2>Find MaskMy.XYZ useful?</h2>
 					<p>Help spread the word by citing it in your research or sharing it on social media. Just remember to keep your actual masking distances a secret!</p>
@@ -310,9 +327,9 @@
 					<p>Copyright (c) 2019, David Swanlund</p>
 
 					<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
-					
+
 					<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
-					
+
 					<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
 
 				</article>
